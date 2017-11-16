@@ -1,6 +1,6 @@
 # EventMemoryLeakExample
 
-Original article by Mark Heath, available here:
+Original article by [Mark Heath](https://github.com/markheath), available here:
 ## [Understanding and Avoiding Memory Leaks with Event Handlers and Event Aggregators](http://mark-dot-net.blogspot.se/2012/10/understanding-and-avoiding-memory-leaks.html)
 
 If you subscribe to an event in C# and forget to unsubscribe, does it cause a memory leak? Always? Never? Or only in special circumstances? Maybe we should make it our practice to always unsubscribe just in case there is a problem. But then again, the Visual Studio designer generated code doesn’t bother to unsubscribe, so surely that means it doesn’t matter?

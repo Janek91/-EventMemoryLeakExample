@@ -13,7 +13,7 @@ namespace MemoryLeak.WPF
         public string Text
         {
             get { return _text; }
-            protected set
+            set
             {
                 if (SetProperty(ref _text, value))
                 {

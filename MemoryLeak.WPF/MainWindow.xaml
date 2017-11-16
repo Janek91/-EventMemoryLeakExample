@@ -6,7 +6,7 @@
         xmlns:wpf="clr-namespace:MemoryLeak.WPF"
         Title="MainWindow"
         Width="400"
-        Height="260"
+        Height="350"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <Window.DataContext>
@@ -96,12 +96,16 @@
                        Text="{Binding ShortLivedWeakSubscribers}"
                        TextAlignment="Left" />
         </Grid>
-        <TextBlock Grid.Row="1"
-                   Margin="5"
-                   HorizontalAlignment="Stretch"
-                   VerticalAlignment="Center"
-                   Text="{Binding Text}"
-                   TextAlignment="Center" />
+        <TextBox Grid.Row="1"
+                 Margin="5"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch"
+                 HorizontalScrollBarVisibility="Auto"
+                 Text="{Binding Text,
+                                Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}"
+                 TextAlignment="Center"
+                 VerticalScrollBarVisibility="Auto" />
         <Button Grid.Row="2"
                 Margin="10,5,10,10"
                 Padding="3"

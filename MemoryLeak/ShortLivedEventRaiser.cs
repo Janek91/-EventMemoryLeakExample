@@ -14,7 +14,7 @@ namespace MemoryLeak
             Interlocked.Increment(ref Count);
         }
 
-        protected void RaiseOnSomething(EventArgs e)
+        public void RaiseOnSomething(EventArgs e)
         {
             EventHandler handler = OnSomething;
             handler?.Invoke(this, e);

@@ -16,11 +16,10 @@ namespace MemoryLeak.WPF
             ShortLivedPublishers = "{code}";
             ShortLivedSubscribers = "{code}";
             ShortLivedWeakSubscribers = "{code}";
-            _timer = new Timer(Callback, this, 0, 1);
+            _timer = new Timer(Callback, this, 0, 16);
             publisher1 = new EventPublisher();
             publisher2 = new EventPublisher();
             weakEventAggregator = new WeakEventAggregator();
-            //_timer.TrayLocation =new System.Drawing.Point(17, 17);
         }
 
         private void Callback(object state)
@@ -82,13 +81,14 @@ namespace MemoryLeak.WPF
             {
                 ShortLivedEventRaiser shortlived = new ShortLivedEventRaiser();
                 shortlived.OnSomething += ShortlivedOnOnSomething;
+                shortlived.RaiseOnSomething(EventArgs.Empty);
+                shortlivedEventRaiserCreated++;
             }
-            shortlivedEventRaiserCreated += count;
         }
 
         private void ShortlivedOnOnSomething(object sender, EventArgs eventArgs)
         {
-            // just to prove that there is no smoke and mirrors, our event handler will do something involving the form
+            // just to prove that there is no smoke and mirrors, our event handler will do something involving the window
             Text = "Got an event from a short-lived event raiser";
         }
 

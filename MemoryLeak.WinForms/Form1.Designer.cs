@@ -1,4 +1,4 @@
-﻿namespace MemoryLeakTest
+﻿namespace MemoryLeak.WinForms
 {
     partial class Form1
     {

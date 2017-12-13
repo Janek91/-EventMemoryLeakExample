@@ -120,6 +120,7 @@ namespace MemoryLeak.WPF
             for (int n = 0; n < count; n++)
             {
                 ShortLivedEventPublisher shortlived3 = new ShortLivedEventPublisher(publisher1);
+                shortlived3.PublishSomething();
             }
             shortlivedEventPublisherCreated += count;
         }

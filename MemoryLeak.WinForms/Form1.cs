@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Windows.Navigation;
 
 namespace MemoryLeak.WinForms
 {
@@ -37,7 +38,7 @@ namespace MemoryLeak.WinForms
             shortlivedEventRaiserCreated += count;
         }
 
-        private void ShortlivedOnOnSomething(object sender, EventArgs eventArgs)
+        private void ShortlivedOnOnSomething(object sender, ReturnEventArgs<int> eventArgs)
         {
             // just to prove that there is no smoke and mirrors, our event handler will do something involving the form
             Text = "Got an event from a short-lived event raiser";

@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using System;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace MemoryLeak.WPF
 {
@@ -8,7 +9,14 @@ namespace MemoryLeak.WPF
     {
         public EventHandler TextChanged;
 
+        public StringBuilder TextBuilder;
+
         private string _text;
+
+        public ViewModelBase()
+        {
+            TextBuilder = new StringBuilder();
+        }
 
         public string Text
         {

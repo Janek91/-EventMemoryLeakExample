@@ -1,13 +1,25 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Navigation;
 
 namespace MemoryLeak.WPF
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private readonly EventPublisher publisher1;
+        private readonly EventPublisher publisher2;
+        private readonly WeakEventAggregator weakEventAggregator;
         private string _shortLivedEventRaisers;
-
+        private string _shortLivedEventSubscribers;
+        private string _shortLivedPublishers;
+        private string _shortLivedSubscribers;
+        private string _shortLivedWeakSubscribers;
         private Timer _timer;
+        private int shortlivedEventBusSubscriberCreated;
+        private int shortlivedEventPublisherCreated;
+        private int shortlivedEventRaiserCreated;
+        private int shortlivedEventSubscriberCreated;
+        private int shortlivedWeakEventSubscriberCreated;
 
         public MainWindowViewModel()
         {
@@ -22,18 +34,11 @@ namespace MemoryLeak.WPF
             weakEventAggregator = new WeakEventAggregator();
         }
 
-        private void Callback(object state)
-        {
-            OnTimerTick();
-        }
-
         public string ShortLivedEventRaisers
         {
             get { return _shortLivedEventRaisers; }
             set { SetProperty(ref _shortLivedEventRaisers, value); }
         }
-
-        private string _shortLivedEventSubscribers;
 
         public string ShortLivedEventSubscribers
         {
@@ -41,15 +46,11 @@ namespace MemoryLeak.WPF
             set { SetProperty(ref _shortLivedEventSubscribers, value); }
         }
 
-        private string _shortLivedPublishers;
-
         public string ShortLivedPublishers
         {
             get { return _shortLivedPublishers; }
             set { SetProperty(ref _shortLivedPublishers, value); }
         }
-
-        private string _shortLivedSubscribers;
 
         public string ShortLivedSubscribers
         {
@@ -57,22 +58,16 @@ namespace MemoryLeak.WPF
             set { SetProperty(ref _shortLivedSubscribers, value); }
         }
 
-        private string _shortLivedWeakSubscribers;
-
         public string ShortLivedWeakSubscribers
         {
             get { return _shortLivedWeakSubscribers; }
             set { SetProperty(ref _shortLivedWeakSubscribers, value); }
         }
 
-        private int shortlivedEventRaiserCreated;
-        private int shortlivedEventSubscriberCreated;
-        private int shortlivedEventPublisherCreated;
-        private int shortlivedEventBusSubscriberCreated;
-        private int shortlivedWeakEventSubscriberCreated;
-        private readonly EventPublisher publisher1;
-        private readonly EventPublisher publisher2;
-        private readonly WeakEventAggregator weakEventAggregator;
+        private void Callback(object state)
+        {
+            OnTimerTick();
+        }
 
         public void OnSubscribeToShortlivedObjects()
         {
@@ -81,15 +76,15 @@ namespace MemoryLeak.WPF
             {
                 ShortLivedEventRaiser shortlived = new ShortLivedEventRaiser();
                 shortlived.OnSomething += ShortlivedOnOnSomething;
-                shortlived.RaiseOnSomething(EventArgs.Empty);
+                shortlived.RaiseOnSomething(new ReturnEventArgs<int>(n));
                 shortlivedEventRaiserCreated++;
             }
         }
 
-        private void ShortlivedOnOnSomething(object sender, EventArgs eventArgs)
+        private void ShortlivedOnOnSomething(object sender, ReturnEventArgs<int> eventArgs)
         {
             // just to prove that there is no smoke and mirrors, our event handler will do something involving the window
-            Text = "Got an event from a short-lived event raiser";
+            TextBuilder.AppendLine($"Got an event from a short-lived event raiser {eventArgs.Result}");
         }
 
         private void OnTimerTick()
@@ -99,6 +94,7 @@ namespace MemoryLeak.WPF
             ShortLivedPublishers = $"{shortlivedEventPublisherCreated} created, {ShortLivedEventPublisher.Count} still alive";
             ShortLivedSubscribers = $"{shortlivedEventBusSubscriberCreated} created, {ShortLivedEventBusSubscriber.Count} still alive";
             ShortLivedWeakSubscribers = $"{shortlivedWeakEventSubscriberCreated} created, {ShortLivedWeakEventSubscriber.Count} still alive";
+            Text = TextBuilder.ToString();
         }
 
         public void OnShortlivedEventSubscribersClick()
@@ -149,4 +145,3 @@ namespace MemoryLeak.WPF
         }
     }
 }
-

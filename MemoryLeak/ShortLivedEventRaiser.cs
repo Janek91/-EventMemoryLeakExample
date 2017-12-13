@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Navigation;
 
 namespace MemoryLeak
 {
@@ -7,16 +8,16 @@ namespace MemoryLeak
     {
         public static int Count;
 
-        public event EventHandler OnSomething;
+        public event EventHandler<ReturnEventArgs<int>> OnSomething;
 
         public ShortLivedEventRaiser()
         {
             Interlocked.Increment(ref Count);
         }
 
-        public void RaiseOnSomething(EventArgs e)
+        public void RaiseOnSomething(ReturnEventArgs<int> e)
         {
-            EventHandler handler = OnSomething;
+            EventHandler<ReturnEventArgs<int>> handler = OnSomething;
             handler?.Invoke(this, e);
         }
 
